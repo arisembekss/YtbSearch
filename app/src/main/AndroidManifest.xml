@@ -25,6 +25,10 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/title_activity_splash"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PlayActivity"
+            android:label="@string/title_activity_play"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

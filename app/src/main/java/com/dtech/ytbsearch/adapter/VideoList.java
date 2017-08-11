@@ -1,6 +1,8 @@
 package com.dtech.ytbsearch.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.dtech.ytbsearch.PlayActivity;
 import com.dtech.ytbsearch.R;
+import com.dtech.ytbsearch.SplashActivity;
 import com.dtech.ytbsearch.data.DataJson;
 import com.squareup.picasso.Picasso;
 
@@ -57,10 +61,11 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return data.size();
     }
 
-    class MyHolder extends RecyclerView.ViewHolder{
+    class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         TextView listTv, listTitle, listUrl;
         ImageView imgUrl;
+        CardView cardView;
         public MyHolder(View itemView) {
             super(itemView);
 
@@ -68,6 +73,18 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             listTitle =(TextView) itemView.findViewById(R.id.listTitle);
             listUrl = (TextView) itemView.findViewById(R.id.listUrl);
             imgUrl = (ImageView) itemView.findViewById(R.id.imgUrl);
+            cardView = (CardView) itemView.findViewById(R.id.card);
+            cardView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            String vidId = listTv.getText().toString();
+            String titileVid = listTitle.getText().toString();
+            Intent playVid = new Intent(context, PlayActivity.class);
+            playVid.putExtra("id", vidId);
+            playVid.putExtra("title", titileVid);
+            context.startActivity(playVid);
         }
     }
 }

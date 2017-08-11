@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'ytbsrch'
             keyPassword '300312'
-            storeFile file('E:/AndrostuProj/YtbSearch/ytb.jks')
+            storeFile file('../ytb.jks')
             storePassword '300312'
         }
     }
