@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dtech.ytbsearch.R;
 import com.dtech.ytbsearch.data.DataJson;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,6 +44,12 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         MyHolder myHolder = (MyHolder) holder;
         DataJson current = data.get(position);
         myHolder.listTv.setText(current.videoId);
+        myHolder.listTitle.setText(current.titleVid);
+        myHolder.listUrl.setText(current.urlVid);
+        Picasso.with(context).load(current.urlVid)
+                .error(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(myHolder.imgUrl);
     }
 
     @Override
@@ -51,11 +59,15 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     class MyHolder extends RecyclerView.ViewHolder{
 
-        TextView listTv;
+        TextView listTv, listTitle, listUrl;
+        ImageView imgUrl;
         public MyHolder(View itemView) {
             super(itemView);
 
-            listTv = (TextView) itemView.findViewById(R.id.listTv);
+            listTv = (TextView) itemView.findViewById(R.id.listVideoId);
+            listTitle =(TextView) itemView.findViewById(R.id.listTitle);
+            listUrl = (TextView) itemView.findViewById(R.id.listUrl);
+            imgUrl = (ImageView) itemView.findViewById(R.id.imgUrl);
         }
     }
 }

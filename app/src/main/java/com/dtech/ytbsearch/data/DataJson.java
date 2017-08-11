@@ -5,5 +5,5 @@ package com.dtech.ytbsearch.data;
  */
 
 public class DataJson {
-    public String etag, videoId, channelId;
+    public String etag, videoId, channelId, titleVid, urlVid;
 }

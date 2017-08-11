@@ -1,6 +1,8 @@
 package com.dtech.ytbsearch;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,17 +23,23 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dtech.ytbsearch.adapter.VideoList;
+import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.data.DataJson;
+import com.dtech.ytbsearch.preference.PrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    String prefResponse;
+    SharedPreferences sharedPreferences;
+    PrefManager prefManager;
     ProgressDialog loading;
     TextView textView;
 
@@ -45,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        prefManager = new PrefManager(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,19 +63,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //textView = (TextView) findViewById(R.id.tv);
-        iniUI();
-        grabData();
+        if (!fileExistance(Config.FIRST_TIME)) {
+            launchSplash();
+            finish();
+            //grabData();
+        } else {
+            iniUI();
+
+        }
+
+    }
+
+    private boolean fileExistance(String fname) {
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
+    }
+
+    private void launchSplash() {
+        Intent splash = new Intent(this, SplashActivity.class);
+        startActivity(splash);
     }
 
     private void iniUI() {
+        sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
+        prefResponse = (sharedPreferences.getString(Config.RESPONSE, ""));
         recyclerHist = (RecyclerView) findViewById(R.id.rechisto);
+
+        showJSON(prefResponse);
     }
 
     private void grabData() {
-        loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
+        //loading = ProgressDialog.show(this,"Please wait...","Fetching...",false,false);
+
+        loading = new ProgressDialog(this);
+        loading.setMessage("Preparing data");
+        loading.setIndeterminate(false);
+        loading.setCancelable(false);
+        loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        loading.show();
         String url = "http://samimi.web.id/gitbuku/index.php";
-        //StringRequest request = new StringRequest()
         StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -99,10 +134,15 @@ public class MainActivity extends AppCompatActivity {
             for (int k = 0; k < items.length(); k++) {
                 JSONObject itemData = items.getJSONObject(k);
                 JSONObject itemId = itemData.getJSONObject("id");
+                JSONObject itemSnippet = itemData.getJSONObject("snippet");
+                JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
+                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("default");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
                 if (itemId.has("videoId")) {
                     DataJson dataDump = new DataJson();
                     dataDump.videoId = itemId.getString("videoId");
+                    dataDump.titleVid = itemSnippet.getString("title");
+                    dataDump.urlVid = thumbnailDefault.getString("url");
                     dataJson.add(dataDump);
                 } else {
                     DataJson dataDump = new DataJson();
@@ -143,5 +183,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }
