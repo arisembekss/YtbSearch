@@ -63,14 +63,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (!fileExistance(Config.FIRST_TIME)) {
+        /*if (!fileExistance(Config.FIRST_TIME)) {
             launchSplash();
             finish();
-            //grabData();
         } else {
             iniUI();
-
-        }
+        }*/
+        //grabData();
+        iniUI();
 
     }
 
@@ -88,8 +88,14 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         prefResponse = (sharedPreferences.getString(Config.RESPONSE, ""));
         recyclerHist = (RecyclerView) findViewById(R.id.rechisto);
-
-        showJSON(prefResponse);
+        Log.d("pref Response", prefResponse);
+        if (prefResponse == "") {
+            launchSplash();
+            finish();
+        } else {
+            //grabData();
+            showJSON(prefResponse);
+        }
     }
 
     private void grabData() {
@@ -101,8 +107,8 @@ public class MainActivity extends AppCompatActivity {
         loading.setCancelable(false);
         loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         loading.show();
-        String url = "http://samimi.web.id/gitbuku/index.php";
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+        String url = "http://samimi.web.id/ytb/index.php?q=avril&&maxResults=50";
+        StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 loading.dismiss();
@@ -146,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     dataJson.add(dataDump);
                 } else {
                     DataJson dataDump = new DataJson();
-                    dataDump.channelId = itemId.getString("channelId");
+                    dataDump.channelId = "Channel Session";
                 }
 
             }

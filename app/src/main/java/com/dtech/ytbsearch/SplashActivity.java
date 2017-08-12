@@ -53,12 +53,13 @@ public class SplashActivity extends AppCompatActivity {
 
     private void grabData() {
 
-        String url = "http://samimi.web.id/gitbuku/index.php";
-        StringRequest stringRequest = new StringRequest(url, new Response.Listener<String>() {
+        String url = "http://samimi.web.id/ytb/index.php?q=avril&&maxResults=50";
+        StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 prefManager.setJsonResponse(response);
                 createFile();
+                Log.d("response", response);
                 //sharedResponse = response;
             }
         },
@@ -78,13 +79,13 @@ public class SplashActivity extends AppCompatActivity {
         String string = "first time = false";
         FileOutputStream outputStream;
 
-        try {
+        /*try {
             outputStream = openFileOutput(Config.FIRST_TIME, Context.MODE_PRIVATE);
             outputStream.write(string.getBytes());
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
         finish();
