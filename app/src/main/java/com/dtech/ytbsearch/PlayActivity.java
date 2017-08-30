@@ -47,7 +47,7 @@ public class PlayActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         Intent value = getIntent();
          title = value.getStringExtra("title");
         id = value.getStringExtra("id");
-        textt.setText(id + "\n" + title);
+        //textt.setText(id + "\n" + title);
     }
 
     @Override
