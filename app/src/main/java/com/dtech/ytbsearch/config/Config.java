@@ -15,5 +15,5 @@ public class Config {
     public static final String PREF_NAME = "app-welcome";
 
     public static final String API_YTB = "344704670919-5lnouqv7k5j3ohj8qeqrnuaf9rtjlh05.apps.googleusercontent.com";
-    public static final String URL_REQ = "http://samimi.web.id/ytb/index.php?q=avril&&maxResults=50";
+    public static final String URL_REQ = "http://samimi.web.id/ytb/index.php?q=via%20vallen&&maxResults=50";
 }
