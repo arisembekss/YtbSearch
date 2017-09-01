@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void grabData() {
 
-        String url = "http://samimi.web.id/ytb/index.php?q=via vallen&&maxResults=50";
+        String url = "http://samimi.web.id/ytb/index.php?q=via vallenn&&maxResults=50";
         StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

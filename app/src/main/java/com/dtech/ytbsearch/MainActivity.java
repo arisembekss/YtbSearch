@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         prefManager = new PrefManager(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
             launchSplash();
             finish();
         } else {
-            grabData();
-            //showJSON(prefResponse);
+            //grabData();
+            showJSON(prefResponse);
         }
     }
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         loading.setCancelable(false);
         loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         loading.show();
-        String url = "http://samimi.web.id/ytb/index.php?q=via vallen&&maxResults=50";
+        String url = "http://samimi.web.id/ytb/index.php?q=via vallenn&&maxResults=50";
         StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject itemId = itemData.getJSONObject("id");
                 JSONObject itemSnippet = itemData.getJSONObject("snippet");
                 JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
-                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("default");
+                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("medium");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
                 if (itemId.has("videoId")) {
                     DataJson dataDump = new DataJson();
