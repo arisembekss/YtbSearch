@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     AdView adView;
     InterstitialAd mInterstitialAd;
     AdRequest adRequest;
+    String q = "lagu+via+vallen";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         loading.show();
         String url = "http://samimi.web.id/ytb/index.php?q=via vallenn&&maxResults=50";
-        StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Config.URL_REQ+q+Config.URL_MAX, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 loading.dismiss();
