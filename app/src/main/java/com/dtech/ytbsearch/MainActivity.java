@@ -26,6 +26,11 @@ import com.dtech.ytbsearch.adapter.VideoList;
 import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.data.DataJson;
 import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerHist;
     List<DataJson> dataJson = new ArrayList<>();
     VideoList adapter;
+
+    AdView adView;
+    InterstitialAd mInterstitialAd;
+    AdRequest adRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
+        MobileAds.initialize(this, Config.APP_ID);
         prefManager = new PrefManager(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,8 +81,22 @@ public class MainActivity extends AppCompatActivity {
             iniUI();
         }*/
         //grabData();
+        initAds();
         iniUI();
 
+    }
+
+    private void initAds() {
+
+        adView = (AdView) findViewById(R.id.adView);
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.setAdUnitId(Config.BANNER_ID);
+        adRequest = new AdRequest.Builder().addTestDevice("").build();
+
+        /*init interstitial*/
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     private boolean fileExistance(String fname) {
@@ -88,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         prefResponse = (sharedPreferences.getString(Config.RESPONSE, ""));
         recyclerHist = (RecyclerView) findViewById(R.id.rechisto);
+
         Log.d("pref Response", prefResponse);
         if (prefResponse == "") {
             launchSplash();
@@ -142,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject itemId = itemData.getJSONObject("id");
                 JSONObject itemSnippet = itemData.getJSONObject("snippet");
                 JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
-                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("medium");
+                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
                 if (itemId.has("videoId")) {
                     DataJson dataDump = new DataJson();
@@ -169,6 +195,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerHist.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    public void showAds() {
+        adView.loadAd(adRequest);
+
+        /*if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            Log.d("TAG", "The interstitial wasn't loaded yet.");
+        }*/
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

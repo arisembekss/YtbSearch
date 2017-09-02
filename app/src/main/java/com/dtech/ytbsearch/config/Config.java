@@ -15,5 +15,11 @@ public class Config {
     public static final String PREF_NAME = "app-welcome";
 
     public static final String API_YTB = "344704670919-5lnouqv7k5j3ohj8qeqrnuaf9rtjlh05.apps.googleusercontent.com";
-    public static final String URL_REQ = "http://samimi.web.id/ytb/index.php?q=via%20vallen&&maxResults=50";
+    public static final String URL_REQ = "http://samimi.web.id/ytb/index.php?q=lagu+via+vallen&&maxResults=50";
+
+    public static final String APP_ID = "ca-app-pub-6611308189785883~6159930234";
+    public static final String BANNER_ID = "ca-app-pub-6611308189785883/4066806285";
+    public static final String INTERS_ID = "ca-app-pub-6611308189785883/3875234598";
+    public static final String NATIVE_ID = "ca-app-pub-6611308189785883/9207452322";
+
 }
