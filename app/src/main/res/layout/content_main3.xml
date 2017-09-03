@@ -17,16 +17,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/yview"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lintitle"
+        android:layout_below="@+id/yview"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.32">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:background="@color/colorAccent"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.32">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orkes Melayu"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.32">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:background="@color/colorAccent"/>
+        </RelativeLayout>
+    </LinearLayout>
     <GridView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:columnWidth="100dp"
+
+        android:layout_marginTop="8dp"
+
         android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
         android:listSelector="#00000000"
         android:numColumns="2"
         android:stretchMode="columnWidth"
         android:id="@+id/griMain"
-        android:layout_below="@+id/yview">
+        android:layout_below="@+id/lintitle">
 
 
     </GridView>
@@ -34,6 +76,9 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/bmain"
-        android:text="Artis"
-        android:layout_below="@+id/griMain"/>
+        android:text="Biduan Pantura"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/round_bg"
+        android:textColor="@color/cardview_light_background"
+        />
 </RelativeLayout>

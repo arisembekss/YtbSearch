@@ -22,15 +22,16 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     public static String[] mainTitle = {
             "New Palapa Terbaru",
             "Monata Terbaru",
-            "Sera Terbaru",
-            "Dangdut Reggae Terbaru"
+            "Sagita Terbaru",
+            "Sera Terbaru"
+
     };
 
     public static String[] mainQuery = {
             "new+palapa+terbaru",
             "monata+terbaru",
-            "sera+terbaru",
-            "dangdut+reggae+terbaru"
+            "sagita+teerbaru",
+            "sera+terbaru"
     };
 
     private static final int RECOVERY_REQUEST = 1;
@@ -47,16 +48,16 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
         youTubePlayerView.initialize(Config.API_YTB, this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
                 Intent intent = new Intent(Main3Activity.this, Main2Activity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         initUi();
     }
@@ -72,7 +73,8 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
         if (!b) {
-            youTubePlayer.loadVideo("RcmZ-zn02kA", 2000);
+            //youTubePlayer.loadVideo("RcmZ-zn02kA");
+            youTubePlayer.cueVideo("");
             //youTubePlayer.play();
         }
     }
