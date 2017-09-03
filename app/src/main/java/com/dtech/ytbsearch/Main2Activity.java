@@ -14,15 +14,54 @@ public class Main2Activity extends AppCompatActivity {
 
     public static String[] gridTitle = {
             "Nella Kharisma",
-            "Via Vallen"
+            "Via Vallen",
+            "Ratna Antika",
+            "Anjar Agustin",
+            "Uut Selly",
+            "Yeyen Vivia",
+            "Cupi Cupita",
+            "Lynda Moy",
+            "Kiki Syarah",
+            "Lina Marlina",
+            "Wika Salim",
+            "Mela Barbie",
+            "Ana Velisa",
+            "Sasha Aneska",
+            "Lia Capucino"
     };
 
     public static String[] gridQuery = {
             "nella+kharisma",
-            "via+vallen"
+            "via+vallen",
+            "Ratna+Antika",
+            "Anjar+Agustin",
+            "Uut+Selly",
+            "Yeyen+Vivia",
+            "Cupi+Cupita",
+            "Lynda+Moy",
+            "Kiki+Syarah+hot",
+            "Lina+Marlina",
+            "Wika+Salim+konser",
+            "Mela+Barbie",
+            "Ana+Velisa",
+            "Sasha+Aneska",
+            "Lia+Capucino"
     };
 
     public static int[] gridImage = {
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
+            R.drawable.vallen,
             R.drawable.vallen,
             R.drawable.vallen
     };

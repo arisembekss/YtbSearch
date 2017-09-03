@@ -8,9 +8,7 @@
     <com.pkmmte.view.CircularImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-
+        android:layout_gravity="center_horizontal"
         app:border="true"
         android:id="@+id/imgGrid"
         app:border_color="#EEEEEE"
@@ -20,15 +18,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_below="@+id/imgGrid"/>
+        android:layout_gravity="center_horizontal"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tQuery"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
         android:visibility="invisible"
-        android:layout_below="@+id/tTitle"/>
+        />
 </LinearLayout>
