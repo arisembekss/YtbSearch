@@ -1,6 +1,7 @@
 package com.dtech.ytbsearch;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,12 @@ import com.dtech.ytbsearch.adapter.MediumVideoList;
 import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.config.CustomClickInterface;
 import com.dtech.ytbsearch.data.DataJson;
+import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -27,6 +34,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.dtech.ytbsearch.R.id.adView;
 
 public class PlayActivity extends YouTubeBaseActivity implements   CustomClickInterface, YouTubePlayer.OnInitializedListener {
 
@@ -41,6 +50,12 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
 
     YouTubePlayer player;
     String mVidId;
+    AdView adView;
+    InterstitialAd mInterstitialAd;
+    AdRequest adRequest;
+    PrefManager prefManager;
+    SharedPreferences sharedPreferences;
+    String valueAd;
 
     public String getmVidId() {
         return mVidId;
@@ -56,7 +71,11 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
         setContentView(R.layout.activity_play);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        MobileAds.initialize(this, Config.APP_ID);
 
+        prefManager = new PrefManager(this);
+        sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
+        valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
         Intent value = getIntent();
         title = value.getStringExtra("title");
         id = value.getStringExtra("id");
@@ -76,7 +95,30 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
         //textt = (TextView) findViewById(R.id.textt);
 
         //textt.setText(id + "\n" + title);
+        if (valueAd.contains("1")) {
+            initAds();
+        } /*else {
+            adView.setVisibility(View.INVISIBLE);
+        }*/
+
         initUi();
+    }
+
+    private void initAds() {
+
+        adView = (AdView) findViewById(R.id.adView);
+        if (valueAd.contains("0")) {
+            adView.setVisibility(View.INVISIBLE);
+        }
+        /*adView.setAdSize(AdSize.SMART_BANNER);*/
+        /*adView.setAdUnitId(Config.BANNER_ID);*/
+        adRequest = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
+        adView.loadAd(adRequest);
+
+        /*init interstitial*/
+        /*mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(Config.INTERS_ID);
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build());*/
     }
 
     public void initUi() {
@@ -153,5 +195,17 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
             String error = String.format(getString(R.string.player_error), errorReason.toString());
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        /*if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            finish();
+        }*/
+
+        super.onBackPressed();
     }
 }

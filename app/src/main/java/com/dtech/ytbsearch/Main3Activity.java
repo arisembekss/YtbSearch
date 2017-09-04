@@ -26,6 +26,10 @@ import com.dtech.ytbsearch.adapter.MediumVideoList;
 import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.data.DataJson;
 import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -66,19 +70,28 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     String valueInters, valueAd;
     YouTubePlayerView youTubePlayerView;
     DatabaseReference intersRef, adRef;
+    InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
 
+        MobileAds.initialize(this, Config.APP_ID);
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
         valueInters = (sharedPreferences.getString(Config.VAL_INTERS, ""));
-        adRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("banner-native");
+
+        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
+        youTubePlayerView.initialize(Config.API_YTB, this);
+
+        initFbase();
+        initUi();
+    }
+
+    private void initFbase() {
+        adRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("banner-native/status");
         adRef.keepSynced(true);
         adRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,7 +107,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             }
         });
 
-        intersRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("inters");
+        intersRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("inters/status");
         intersRef.keepSynced(true);
         intersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -109,25 +122,13 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
 
             }
         });
-        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
-        youTubePlayerView.initialize(Config.API_YTB, this);
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*//*
-                Intent intent = new Intent(Main3Activity.this, Main2Activity.class);
-                startActivity(intent);
-            }
-        });*/
-
-        initUi();
     }
 
     private void initUi() {
 
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(Config.INTERS_ID);
+        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build());
         grid = (GridView) findViewById(R.id.griMain);
         btnArtis = (Button) findViewById(R.id.bmain);
         GridMainMenu adapter = new GridMainMenu(this, mainTitle, mainQuery);
@@ -135,10 +136,10 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                TextView ttitle = (TextView) view.findViewById(R.id.tmain1);
+                //TextView ttitle = (TextView) view.findViewById(R.id.tmain1);
                 TextView vidId = (TextView) view.findViewById(R.id.tmain2);
 
-                prosesPilih(ttitle.getText().toString(), vidId.getText().toString());
+                prosesPilih(vidId.getText().toString());
 
             }
         });
@@ -152,14 +153,14 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         });
     }
 
-    private void prosesPilih(String title, String query) {
+    private void prosesPilih(String query) {
         loading = new ProgressDialog(this);
         loading.setMessage("Preparing data");
         loading.setIndeterminate(false);
         loading.setCancelable(false);
         loading.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         loading.show();
-        String url = "http://samimi.web.id/ytb/index.php?q=via vallenn&&maxResults=50";
+
         StringRequest stringRequest = new StringRequest(Config.URL_REQ+query+Config.URL_MAX, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -185,16 +186,16 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject result = jsonObject.getJSONObject("result");
-            String nxt = result.getString("nextPageToken");
+            //String nxt = result.getString("nextPageToken");
 
             JSONArray items = result.getJSONArray("items");
 
             //for (int k = 0; k < items.length(); k++) {
                 JSONObject itemData = items.getJSONObject(0);
                 JSONObject itemId = itemData.getJSONObject("id");
-                JSONObject itemSnippet = itemData.getJSONObject("snippet");
-                JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
-                JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");
+                //JSONObject itemSnippet = itemData.getJSONObject("snippet");
+                //JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
+                //JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
                 if (itemId.has("videoId")) {
 
@@ -236,5 +237,27 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             String error = String.format(getString(R.string.player_error), errorReason.toString());
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+
+
+        if (mInterstitialAd.isLoaded()) {
+            if (valueInters.contains("1")) {
+                mInterstitialAd.show();
+                mInterstitialAd.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        finish();
+                    }
+                });
+            } else {
+                finish();
+            }
+        } else {
+            finish();
+        }
+
     }
 }

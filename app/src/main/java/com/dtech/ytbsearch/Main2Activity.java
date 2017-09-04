@@ -1,5 +1,6 @@
 package com.dtech.ytbsearch;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,10 @@ import android.view.View;
 import android.widget.GridView;
 
 import com.dtech.ytbsearch.adapter.GridMenu;
+import com.dtech.ytbsearch.config.Config;
+import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
 
 public class Main2Activity extends AppCompatActivity {
 
@@ -67,11 +72,20 @@ public class Main2Activity extends AppCompatActivity {
     };
 
     GridView gridView;
+    AdRequest adRequest;
+    PrefManager prefManager;
+    SharedPreferences sharedPreferences;
+    NativeExpressAdView adView;
+    String valueAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        prefManager = new PrefManager(this);
+        sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
+        valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
 
@@ -84,7 +98,26 @@ public class Main2Activity extends AppCompatActivity {
             }
         });*/
 
+        adView = (NativeExpressAdView)findViewById(R.id.nativeadView);
+        if (valueAd.contains("1")) {
+            adView.setVisibility(View.VISIBLE);
+            initAds();
+        } else {
+            adView.setVisibility(View.INVISIBLE);
+        }
         initUi();
+    }
+
+    public void initAds() {
+
+
+        /*if (valueAd.contains("0")) {
+            adView.setVisibility(View.GONE);
+        } else {
+            adView.setVisibility(View.VISIBLE);
+        }*/
+        AdRequest request = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
+        adView.loadAd(request);
     }
 
     private void initUi() {
