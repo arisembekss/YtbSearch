@@ -2,10 +2,7 @@ package com.dtech.ytbsearch;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.GridView;
 
@@ -86,17 +83,6 @@ public class Main2Activity extends AppCompatActivity {
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         adView = (NativeExpressAdView)findViewById(R.id.nativeadView);
         if (valueAd.contains("1")) {
@@ -110,14 +96,8 @@ public class Main2Activity extends AppCompatActivity {
 
     public void initAds() {
 
-
-        /*if (valueAd.contains("0")) {
-            adView.setVisibility(View.GONE);
-        } else {
-            adView.setVisibility(View.VISIBLE);
-        }*/
-        AdRequest request = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
-        adView.loadAd(request);
+        adRequest = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
+        adView.loadAd(adRequest);
     }
 
     private void initUi() {

@@ -5,13 +5,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dtech.ytbsearch.adapter.MediumVideoList;
@@ -20,9 +16,7 @@ import com.dtech.ytbsearch.config.CustomClickInterface;
 import com.dtech.ytbsearch.data.DataJson;
 import com.dtech.ytbsearch.preference.PrefManager;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -35,11 +29,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.dtech.ytbsearch.R.id.adView;
-
 public class PlayActivity extends YouTubeBaseActivity implements   CustomClickInterface, YouTubePlayer.OnInitializedListener {
 
-    TextView textt;
     YouTubePlayerView youTubeView;
     private static final int RECOVERY_REQUEST = 1;
 
@@ -51,7 +42,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     YouTubePlayer player;
     String mVidId;
     AdView adView;
-    InterstitialAd mInterstitialAd;
+    //InterstitialAd mInterstitialAd;
     AdRequest adRequest;
     PrefManager prefManager;
     SharedPreferences sharedPreferences;
@@ -92,26 +83,19 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
             }
         });
 
-        //textt = (TextView) findViewById(R.id.textt);
-
-        //textt.setText(id + "\n" + title);
+        adView = (AdView) findViewById(R.id.adView);
         if (valueAd.contains("1")) {
+            adView.setVisibility(View.VISIBLE);
             initAds();
-        } /*else {
+        } else {
             adView.setVisibility(View.INVISIBLE);
-        }*/
+        }
 
         initUi();
     }
 
     private void initAds() {
 
-        adView = (AdView) findViewById(R.id.adView);
-        if (valueAd.contains("0")) {
-            adView.setVisibility(View.INVISIBLE);
-        }
-        /*adView.setAdSize(AdSize.SMART_BANNER);*/
-        /*adView.setAdUnitId(Config.BANNER_ID);*/
         adRequest = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
         adView.loadAd(adRequest);
 
@@ -130,7 +114,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject result = jsonObject.getJSONObject("result");
-            String nxt = result.getString("nextPageToken");
+            //String nxt = result.getString("nextPageToken");
 
             JSONArray items = result.getJSONArray("items");
 

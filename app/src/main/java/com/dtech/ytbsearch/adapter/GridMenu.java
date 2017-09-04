@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.dtech.ytbsearch.Main3Activity;
 import com.dtech.ytbsearch.PlayActivity;
 import com.dtech.ytbsearch.R;
 import com.dtech.ytbsearch.config.Config;
@@ -76,13 +74,13 @@ public class GridMenu extends BaseAdapter {
             grid = view;
         }
 
-        LinearLayout linmain = (LinearLayout) grid.findViewById(R.id.linmain);
+        LinearLayout linmain = (LinearLayout) grid.findViewById(R.id.linemain);
         TextView tTitle = (TextView) grid.findViewById(R.id.tTitle);
         final TextView tQuery = (TextView) grid.findViewById(R.id.tQuery);
         CircularImageView img = (CircularImageView) grid.findViewById(R.id.imgGrid);
         img.setBorderColor(R.color.grey);
         img.setBorderWidth(4);
-        img.addShadow();
+        //img.addShadow();
         img.setSelectorStrokeWidth(10);
 
         tTitle.setText(title[i]);
@@ -130,16 +128,16 @@ public class GridMenu extends BaseAdapter {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONObject result = jsonObject.getJSONObject("result");
-            String nxt = result.getString("nextPageToken");
+            //String nxt = result.getString("nextPageToken");
 
             JSONArray items = result.getJSONArray("items");
 
             //for (int k = 0; k < items.length(); k++) {
             JSONObject itemData = items.getJSONObject(0);
             JSONObject itemId = itemData.getJSONObject("id");
-            JSONObject itemSnippet = itemData.getJSONObject("snippet");
+            /*JSONObject itemSnippet = itemData.getJSONObject("snippet");
             JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
-            JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");
+            JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");*/
             //JSONObject videoId = itemId.getJSONObject("videoId");
             if (itemId.has("videoId")) {
 
