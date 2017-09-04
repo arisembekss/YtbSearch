@@ -23,4 +23,8 @@ public class Config {
     public static final String INTERS_ID = "ca-app-pub-6611308189785883/3875234598";
     public static final String NATIVE_ID = "ca-app-pub-6611308189785883/9207452322";
 
+    public static final String VAL_INTERS = "val-inters";
+
+    public static final String VAL_AD = "val-ad";
+
 }

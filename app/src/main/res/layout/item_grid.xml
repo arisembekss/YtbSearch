@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/round"
+    android:id="@+id/linmain"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.pkmmte.view.CircularImageView

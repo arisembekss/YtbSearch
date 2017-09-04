@@ -31,4 +31,14 @@ public class PrefManager {
         editor.putString(Config.RESPONSE, response);
         editor.commit();
     }
+
+    public void setadInters(String value) {
+        editor.putString(Config.VAL_INTERS, value);
+        editor.commit();
+    }
+
+    public void setAd(String value) {
+        editor.putString(Config.VAL_AD, value);
+        editor.commit();
+    }
 }
