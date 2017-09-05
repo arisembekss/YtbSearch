@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,14 +75,14 @@ public class GridMenu extends BaseAdapter {
             grid = view;
         }
 
-        LinearLayout linmain = (LinearLayout) grid.findViewById(R.id.linemain);
+        RelativeLayout linmain = (RelativeLayout) grid.findViewById(R.id.linemain);
         TextView tTitle = (TextView) grid.findViewById(R.id.tTitle);
         final TextView tQuery = (TextView) grid.findViewById(R.id.tQuery);
         CircularImageView img = (CircularImageView) grid.findViewById(R.id.imgGrid);
-        img.setBorderColor(R.color.grey);
+        /*img.setBorderColor(R.color.grey);*/
         img.setBorderWidth(4);
         //img.addShadow();
-        img.setSelectorStrokeWidth(10);
+        //img.setSelectorStrokeWidth(10);
 
         tTitle.setText(title[i]);
         tQuery.setText(query[i]);

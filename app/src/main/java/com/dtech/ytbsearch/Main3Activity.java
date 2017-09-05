@@ -38,6 +38,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Random;
+
 public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
     public static String[] mainTitle = {
@@ -49,11 +51,14 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     };
 
     public static String[] mainQuery = {
-            "new+palapa+terbaru",
+            "pallapa+terbaru+2017",
             "monata+terbaru",
             "sagita+teerbaru",
             "sera+terbaru"
     };
+
+    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "8nA-apwq0aY", "UtjFu8c_goE", "d4zTe8yoOVU"};
+    String main;
 
     private static final int RECOVERY_REQUEST = 1;
     GridView grid;
@@ -72,6 +77,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         setContentView(R.layout.activity_main3);
 
         MobileAds.initialize(this, Config.APP_ID);
+        randomVid();
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
@@ -212,12 +218,24 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         }
     }
 
+    public String randomVid() {
+
+        Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index vid", String.valueOf(index));
+        main = idVid[index];
+        return main;
+    }
+
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
+
+        /*randomVid();*/
         if (!b) {
             //youTubePlayer.loadVideo("RcmZ-zn02kA");
-            youTubePlayer.cueVideo("");
+            youTubePlayer.cueVideo(main);
+
             //youTubePlayer.play();
         }
     }
@@ -231,6 +249,12 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             String error = String.format(getString(R.string.player_error), errorReason.toString());
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        //randomVid();
+        super.onResume();
     }
 
     @Override

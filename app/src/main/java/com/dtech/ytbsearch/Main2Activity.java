@@ -51,21 +51,21 @@ public class Main2Activity extends AppCompatActivity {
     };
 
     public static int[] gridImage = {
+            R.drawable.nella,
             R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen,
-            R.drawable.vallen
+            R.drawable.ratna,
+            R.drawable.anjar,
+            R.drawable.uut,
+            R.drawable.yeyen,
+            R.drawable.cupi,
+            R.drawable.lynda,
+            R.drawable.kiki,
+            R.drawable.lina,
+            R.drawable.wika,
+            R.drawable.mela,
+            R.drawable.ana,
+            R.drawable.sasha,
+            R.drawable.lia
     };
 
     GridView gridView;

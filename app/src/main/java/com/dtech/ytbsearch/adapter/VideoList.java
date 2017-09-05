@@ -51,8 +51,8 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         myHolder.listTitle.setText(current.titleVid);
         myHolder.listUrl.setText(current.urlVid);
         Picasso.with(context).load(current.urlVid)
-                .error(R.mipmap.ic_launcher_round)
-                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_bussy)
+                .placeholder(R.mipmap.ic_text_loading)
                 .into(myHolder.imgUrl);
     }
 

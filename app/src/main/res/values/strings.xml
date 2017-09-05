@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">YtbSearch</string>
+    <string name="app_name">Dangdut Koplo Terbaru</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_play">PlayActivity</string>
     <string name="player_error">Error initializing YouTube player: %s</string>
-    <string name="dum_dumy">{{Music of Indonesia}}\n[[File:Dangdut Silaturahmi Ramadhan Surabaya.JPG|thumb|right|260px|A modern dangdut performance]]\n\n\'Dangdut\' (pronounced {{IPAc-en|d|ɑː|ŋ|.|\'|d|uː|t}}) is a genre of [[Indonesia]]n [[Folk music|folk]] and [[traditional]] [[popular music]] that is partly derived from [[Hindustani Classical Music|Hindustani]], [[Malays (ethnic group)|Malay]], and [[Arabic music|Arabic]] music. Dangdut is a very popular genre in Indonesia because of its melodious instrumentation and vocals. Indonesians dance in somewhat similar to the [[ghoomar]] while listening to dangdut music, but in a much slower version.{{citation needed|date=July 2016}} Dangdut features a [[tabla]] and [[gendang]] beat
+    <string name="dum_dumy">
     </string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_main3">Main3Activity</string>
