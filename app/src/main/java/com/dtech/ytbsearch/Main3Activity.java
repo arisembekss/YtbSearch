@@ -25,11 +25,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,14 +60,14 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
     String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
     String main;
 
-    private static final int RECOVERY_REQUEST = 1;
+    //private static final int RECOVERY_REQUEST = 1;
     GridView grid;
     Button btnArtis;
     ProgressDialog loading;
     PrefManager prefManager;
     SharedPreferences sharedPreferences;
     String valueInters, valueAd;
-    YouTubePlayerView youTubePlayerView;
+    //YouTubePlayerView youTubePlayerView;
     YouTubePlayerFragment youTubePlayerFragment;
     YouTubePlayer player;
     DatabaseReference intersRef, adRef;
@@ -82,6 +80,12 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
 
         MobileAds.initialize(this, Config.APP_ID);
         randomVidd();
+        Intent intentvid = getIntent();
+        if (intentvid != null) {
+            Log.d("tagintent", "onCreate: intent !=null");
+        } else {
+            Log.d("tagintent", "onCreate: intent ==null");
+        }
 
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
@@ -191,6 +195,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
             public void onClick(View view) {
                 Intent intent = new Intent(Main3Activity.this, Main2Activity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -247,6 +252,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
                     intent.putExtra("id", vidId);
                     intent.putExtra("response", response);
                     startActivity(intent);
+                    finish();
                     //dataJson.add(dataDump);
                 } else {
                     Toast.makeText(Main3Activity.this, "Currently Unavailable", Toast.LENGTH_SHORT).show();
@@ -321,12 +327,12 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
 
         } else {
             Log.d("ytbcek", "onRestart: player !null");
-            player = null;
+            /*player = null;
             Random random = new Random();
             int index =random.nextInt(idVid.length);
             Log.d("index vid", String.valueOf(index));
             String smainn = idVid[index];
-            player.cueVideo(smainn);
+            player.cueVideo(smainn);*/
             //youTubePlayerFragment.initialize(Config.API_YTB, this);
             /*Random random = new Random();
             int index =random.nextInt(idVid.length);

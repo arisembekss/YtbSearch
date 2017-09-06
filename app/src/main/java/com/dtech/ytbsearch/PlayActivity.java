@@ -3,8 +3,6 @@ package com.dtech.ytbsearch;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class PlayActivity extends YouTubeBaseActivity implements   CustomClickInterface, YouTubePlayer.OnInitializedListener {
 
@@ -42,7 +39,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     MediumVideoList adapter;
 
     YouTubePlayer player;
-    String mVidId;
+    //String mVidId;
     AdView adView;
     //InterstitialAd mInterstitialAd;
     AdRequest adRequest;
@@ -50,14 +47,14 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     SharedPreferences sharedPreferences;
     String valueAd;
 
-    public String getmVidId() {
+    /*public String getmVidId() {
         return mVidId;
     }
 
     public void setmVidId(String mVidId) {
         this.mVidId = mVidId;
-    }
-    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
+    }*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +152,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     @Override
     public void onClick(View view, String idv) {
         //final String vidid = id;
-        setmVidId(idv);
+        //setmVidId(idv);
         //youTubeView.initialize(Config.API_YTB, this);
         this.player.loadVideo(
                 idv
@@ -166,9 +163,14 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+        if (player != null) {
+            Log.d("checkinityutub", "player!=null ");
+        } else {
+            Log.d("checkinityutub", "player==null ");
+        }
         this.player = player;
         if (!wasRestored) {
-            this.player.cueVideo(id); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
+            player.cueVideo(id); // Plays https://www.youtube.com/watch?v=fhWaJi1Hsfo
         } /*else {
             player.loadVideo(this.getmVidId());
         }*/
@@ -199,6 +201,10 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
         String smain = idVid[index];
         this.player.loadVideo(smain);
         finish();*/
-        super.onBackPressed();
+        Intent intent = new Intent(PlayActivity.this, Main3Activity.class);
+        intent.putExtra("vidid", "id");
+        startActivity(intent);
+        finish();
+        //super.onBackPressed();
     }
 }
