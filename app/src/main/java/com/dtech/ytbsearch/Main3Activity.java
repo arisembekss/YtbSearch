@@ -174,7 +174,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
 
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(Config.INTERS_ID);
-        mInterstitialAd.loadAd(new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build());
+        mInterstitialAd.loadAd(new AdRequest.Builder()/*.addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7")*/.build());
         grid = (GridView) findViewById(R.id.griMain);
         btnArtis = (Button) findViewById(R.id.bmain);
         GridMainMenu adapter = new GridMainMenu(this, mainTitle, mainQuery);

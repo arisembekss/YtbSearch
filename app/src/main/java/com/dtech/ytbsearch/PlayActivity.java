@@ -96,7 +96,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
 
     private void initAds() {
 
-        adRequest = new AdRequest.Builder().addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").build();
+        adRequest = new AdRequest.Builder()./*addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").*/build();
         adView.loadAd(adRequest);
 
         /*init interstitial*/
