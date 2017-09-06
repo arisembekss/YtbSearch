@@ -57,7 +57,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             "sera+terbaru"
     };
 
-    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "8nA-apwq0aY", "UtjFu8c_goE", "d4zTe8yoOVU"};
+    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
     String main;
 
     private static final int RECOVERY_REQUEST = 1;
@@ -68,6 +68,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     SharedPreferences sharedPreferences;
     String valueInters, valueAd;
     YouTubePlayerView youTubePlayerView;
+    YouTubePlayer player;
     DatabaseReference intersRef, adRef;
     InterstitialAd mInterstitialAd;
 
@@ -77,7 +78,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         setContentView(R.layout.activity_main3);
 
         MobileAds.initialize(this, Config.APP_ID);
-        randomVid();
+        randomVidd();
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
@@ -86,8 +87,21 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
         youTubePlayerView.initialize(Config.API_YTB, this);
 
+        Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index vid", String.valueOf(index));
+        String smain = idVid[index];
+        randomVid(smain);
         initFbase();
         initUi();
+    }
+
+    private String randomVidd() {
+        Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        //Log.d("index vid", String.valueOf(index));
+        main = idVid[index];
+        return main;
     }
 
     private void initFbase() {
@@ -218,25 +232,35 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         }
     }
 
-    public String randomVid() {
+    public void randomVid(String smain) {
 
-        Random random = new Random();
+        if (this.player != null) {
+            this.player.loadVideo(smain);
+        }
+       /* Random random = new Random();
         int index =random.nextInt(idVid.length);
         Log.d("index vid", String.valueOf(index));
-        main = idVid[index];
-        return main;
+        String smain = idVid[index];*/
+
+
     }
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
+        Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index vid", String.valueOf(index));
+        String smain = idVid[index];
 
+        //this.player = youTubePlayer;
         /*randomVid();*/
         if (!b) {
-            //youTubePlayer.loadVideo("RcmZ-zn02kA");
-            youTubePlayer.cueVideo(main);
+            if (this.player == null) {
+                this.player = youTubePlayer;
+                randomVid(smain);
+            }
 
-            //youTubePlayer.play();
         }
     }
 
@@ -249,6 +273,23 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             String error = String.format(getString(R.string.player_error), errorReason.toString());
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index vid", String.valueOf(index));
+        String smain = idVid[index];
+        randomVid(smain);
+        /*Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index restart", String.valueOf(index));
+        String mainresume = idVid[index];
+
+
+        this.player.loadVideo(mainresume);*/
     }
 
     @Override
