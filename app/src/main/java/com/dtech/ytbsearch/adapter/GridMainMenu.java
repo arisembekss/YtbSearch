@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.dtech.ytbsearch.R;
-import com.pkmmte.view.CircularImageView;
 
 /**
  * Created by lenovo on 02/09/2017.
@@ -16,7 +15,7 @@ import com.pkmmte.view.CircularImageView;
 
 public class GridMainMenu extends BaseAdapter {
 
-    Context context;
+    private Context context;
     private final String[] title;
     private final String[] query;
 
