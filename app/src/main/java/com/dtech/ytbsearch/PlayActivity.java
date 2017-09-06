@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PlayActivity extends YouTubeBaseActivity implements   CustomClickInterface, YouTubePlayer.OnInitializedListener {
 
@@ -55,6 +57,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     public void setmVidId(String mVidId) {
         this.mVidId = mVidId;
     }
+    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,6 +193,12 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
             finish();
         }*/
 
+        /*Random random = new Random();
+        int index =random.nextInt(idVid.length);
+        Log.d("index vid", String.valueOf(index));
+        String smain = idVid[index];
+        this.player.loadVideo(smain);
+        finish();*/
         super.onBackPressed();
     }
 }

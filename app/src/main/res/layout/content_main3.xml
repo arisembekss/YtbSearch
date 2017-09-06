@@ -13,10 +13,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>-->
 
-    <com.google.android.youtube.player.YouTubePlayerView
+    <!--<com.google.android.youtube.player.YouTubePlayerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/yview"/>
+        android:id="@+id/yview"/>-->
+    <fragment
+        android:id="@+id/yview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.google.android.youtube.player.YouTubePlayerFragment">
+    </fragment>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +28,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
 
 import java.util.Random;
 
-public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
+public class Main3Activity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
     public static String[] mainTitle = {
             "New Palapa Terbaru",
@@ -68,6 +70,7 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
     SharedPreferences sharedPreferences;
     String valueInters, valueAd;
     YouTubePlayerView youTubePlayerView;
+    YouTubePlayerFragment youTubePlayerFragment;
     YouTubePlayer player;
     DatabaseReference intersRef, adRef;
     InterstitialAd mInterstitialAd;
@@ -79,19 +82,44 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
 
         MobileAds.initialize(this, Config.APP_ID);
         randomVidd();
+
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
         valueInters = (sharedPreferences.getString(Config.VAL_INTERS, ""));
 
-        youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
-        youTubePlayerView.initialize(Config.API_YTB, this);
+        youTubePlayerFragment = (YouTubePlayerFragment)
+                getFragmentManager().findFragmentById(R.id.yview);
+        youTubePlayerFragment.initialize(Config.API_YTB,this
+                /*new YouTubePlayer.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                        YouTubePlayer youTubePlayer, boolean b) {
+                        // do any work here to cue video, play video, etc.
 
-        Random random = new Random();
+                        Random random = new Random();
+                        int index =random.nextInt(idVid.length);
+                        Log.d("index vid", String.valueOf(index));
+                        String smain = idVid[index];
+
+                        youTubePlayer.cueVideo(smain);
+
+                    }
+                    @Override
+                    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                        YouTubeInitializationResult youTubeInitializationResult) {
+
+                    }
+                }*/);
+        youTubePlayerFragment.onResume();
+        /*youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
+        youTubePlayerView.initialize(Config.API_YTB, this);*/
+
+        /*Random random = new Random();
         int index =random.nextInt(idVid.length);
         Log.d("index vid", String.valueOf(index));
         String smain = idVid[index];
-        randomVid(smain);
+        randomVid(smain);*/
         initFbase();
         initUi();
     }
@@ -232,20 +260,18 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         }
     }
 
-    public void randomVid(String smain) {
+    /*public void randomVid(String smain) {
 
         if (this.player != null) {
             this.player.loadVideo(smain);
+            Log.d("sukses", "load vid");
+        } else {
+            Log.d("fail", "unload vid");
         }
-       /* Random random = new Random();
-        int index =random.nextInt(idVid.length);
-        Log.d("index vid", String.valueOf(index));
-        String smain = idVid[index];*/
 
+    }*/
 
-    }
-
-    @Override
+    /*@Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
 
         Random random = new Random();
@@ -253,14 +279,14 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         Log.d("index vid", String.valueOf(index));
         String smain = idVid[index];
 
-        //this.player = youTubePlayer;
-        /*randomVid();*/
-        if (!b) {
-            if (this.player == null) {
-                this.player = youTubePlayer;
-                randomVid(smain);
-            }
+        this.player = youTubePlayer;
 
+        if (!b) {
+
+            Log.d("restored", "wasnot");
+            randomVid(smain);
+        } else {
+            Log.d("restored", "wast");
         }
     }
 
@@ -273,16 +299,16 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
             String error = String.format(getString(R.string.player_error), errorReason.toString());
             Toast.makeText(this, error, Toast.LENGTH_LONG).show();
         }
-    }
+    }*/
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Random random = new Random();
+       /* Random random = new Random();
         int index =random.nextInt(idVid.length);
         Log.d("index vid", String.valueOf(index));
         String smain = idVid[index];
-        randomVid(smain);
+        randomVid(smain);*/
         /*Random random = new Random();
         int index =random.nextInt(idVid.length);
         Log.d("index restart", String.valueOf(index));
@@ -290,12 +316,53 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
 
 
         this.player.loadVideo(mainresume);*/
+        if (player == null) {
+            Log.d("ytbcek", "onRestart: player null");
+
+        } else {
+            Log.d("ytbcek", "onRestart: player !null");
+            player = null;
+            Random random = new Random();
+            int index =random.nextInt(idVid.length);
+            Log.d("index vid", String.valueOf(index));
+            String smainn = idVid[index];
+            player.cueVideo(smainn);
+            //youTubePlayerFragment.initialize(Config.API_YTB, this);
+            /*Random random = new Random();
+            int index =random.nextInt(idVid.length);
+            Log.d("index vid", String.valueOf(index));
+            final String smainn = idVid[index];
+            youTubePlayerFragment = null;
+            youTubePlayerFragment=(YouTubePlayerFragment)
+                    getFragmentManager().findFragmentById(R.id.yview);
+            player = null;
+            youTubePlayerFragment.initialize(Config.API_YTB, new YouTubePlayer.OnInitializedListener() {
+                @Override
+                public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                    player.loadVideo(smainn, 2000);
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+                }
+            });*/
+
+
+        }
     }
 
     @Override
     protected void onResume() {
-        //randomVid();
+
         super.onResume();
+        if (player == null) {
+
+            Log.d("ytbcek", "onReume: player null");
+        } else {
+            Log.d("ytbcek", "onReume: player !null");
+            //player.play();
+        }
     }
 
     @Override
@@ -317,6 +384,24 @@ public class Main3Activity extends YouTubeBaseActivity implements YouTubePlayer.
         } else {
             finish();
         }
+
+    }
+
+    @Override
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+        this.player = youTubePlayer;
+
+        if (!b) {
+            Random random = new Random();
+            int index =random.nextInt(idVid.length);
+            Log.d("index vid", String.valueOf(index));
+            String smain = idVid[index];
+            player.cueVideo(smain);
+        }
+    }
+
+    @Override
+    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
     }
 }
