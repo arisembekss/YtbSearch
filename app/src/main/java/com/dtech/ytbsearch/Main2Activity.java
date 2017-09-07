@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 public class Main2Activity extends AppCompatActivity {
 
-    public static String[] gridTitle = {
+    public static String[] gridTitle /*= {
             "Nella Kharisma",
             "Via Vallen",
             "Ratna Antika",
@@ -45,9 +45,9 @@ public class Main2Activity extends AppCompatActivity {
             "Ana Velisa",
             "Sasha Aneska",
             "Lia Capucino"
-    };
+    }*/;
 
-    public static String[] gridQuery = {
+    public static String[] gridQuery /*= {
             "nella+kharisma",
             "via+vallen",
             "Ratna+Antika",
@@ -63,11 +63,11 @@ public class Main2Activity extends AppCompatActivity {
             "Ana+Velisa",
             "Sasha+Aneska",
             "Lia+Capucino"
-    };
+    }*/;
 
     public static int[] gridImage = {
             R.drawable.nella,
-            R.drawable.vallen,
+            R.drawable.valen,
             R.drawable.ratna,
             R.drawable.anjar,
             R.drawable.uut,
@@ -89,7 +89,7 @@ public class Main2Activity extends AppCompatActivity {
     PrefManager prefManager;
     SharedPreferences sharedPreferences;
     NativeExpressAdView adView;
-    String valueAd;
+    String valueAd, prefsectitle, prefsecvid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,11 @@ public class Main2Activity extends AppCompatActivity {
         prefManager = new PrefManager(this);
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
-
+        prefsectitle = (sharedPreferences.getString(Config.SECOND_TITLE, ""));
+        prefsecvid = (sharedPreferences.getString(Config.SECOND_VID, ""));
+        gridTitle = prefsectitle.split(",");
+        gridQuery = prefsecvid.split(",");
+        Log.d("prefsec", prefsectitle+"\n"+prefsecvid);
         adView = (NativeExpressAdView)findViewById(R.id.nativeadView);
         if (valueAd.contains("1")) {
             adView.setVisibility(View.VISIBLE);

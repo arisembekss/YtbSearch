@@ -2,6 +2,7 @@ package com.dtech.ytbsearch;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.race604.drawable.wave.WaveDrawable;
 
 import java.io.FileOutputStream;
@@ -31,6 +37,8 @@ public class SplashActivity extends AppCompatActivity {
     PrefManager prefManager;
     WaveDrawable mWaveDrawable;
     ImageView imgsplash;
+    DatabaseReference refSecTitle, refSecVid, refMainTitle, refMainVid;
+    String prefsectitle, prefsecvid, prefmaintitle, prefmainvid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -43,52 +51,92 @@ public class SplashActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
 
         imgsplash = (ImageView) findViewById(R.id.imgsplash);
-        mWaveDrawable = new WaveDrawable(this, R.drawable.android_robot);
+        mWaveDrawable = new WaveDrawable(this, R.mipmap.ic_launcher);
         imgsplash.setImageDrawable(mWaveDrawable);
         mWaveDrawable.setLevel(5000);
         mWaveDrawable.setIndeterminate(true);
 
-        grabData();
+        new Loading().execute();
     }
 
-    private void grabData() {
+    public class Loading extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            refSecTitle = FirebaseDatabase.getInstance().getReference().child("ytb").child("vallen").child("title");
+            refMainTitle = FirebaseDatabase.getInstance().getReference().child("ytb").child("vallen").child("titlemain");
+            refSecVid = FirebaseDatabase.getInstance().getReference().child("ytb").child("vallen").child("vidartis");
+            refMainVid = FirebaseDatabase.getInstance().getReference().child("ytb").child("vallen").child("vidmain");
 
-        String url = "http://samimi.web.id/ytb/index.php?q=via vallenn&&maxResults=50";
-        StringRequest stringRequest = new StringRequest(Config.URL_REQ, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                prefManager.setJsonResponse(response);
-                createFile();
-                Log.d("response", response);
-                //sharedResponse = response;
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //loading.dismiss();
-                        Log.d("eror json: ", error.getMessage());
-                    }
-                });
+            refSecTitle.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefsectitle = String.valueOf(dataSnapshot.getValue());
+                    prefManager.setSecTitle(prefsectitle);
+                }
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-    public void createFile() {
-        String string = "first time = false";
-        FileOutputStream outputStream;
+                }
+            });
 
-        /*try {
-            outputStream = openFileOutput(Config.FIRST_TIME, Context.MODE_PRIVATE);
-            outputStream.write(string.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-        Intent main = new Intent(this, MainActivity.class);
-        startActivity(main);
-        finish();
+            refMainTitle.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefmaintitle = String.valueOf(dataSnapshot.getValue());
+                    prefManager.setMainTitle(prefmaintitle);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            refSecVid.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefsecvid = String.valueOf(dataSnapshot.getValue());
+                    prefManager.setSecVid(prefsecvid);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            refMainVid.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefmainvid = String.valueOf(dataSnapshot.getValue());
+                    prefManager.setMainVid(prefmainvid);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            //if (prefmainvid != null) {
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+            //}
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Intent intent = new Intent(SplashActivity.this, Main3Activity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override

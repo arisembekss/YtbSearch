@@ -41,4 +41,24 @@ public class PrefManager {
         editor.putString(Config.VAL_AD, value);
         editor.commit();
     }
+
+    public void setMainTitle(String title) {
+        editor.putString(Config.MAIN_TITLE, title);
+        editor.commit();
+    }
+
+    public void setMainVid(String title) {
+        editor.putString(Config.MAIN_VID, title);
+        editor.commit();
+    }
+
+    public void setSecTitle(String title) {
+        editor.putString(Config.SECOND_TITLE, title);
+        editor.commit();
+    }
+
+    public void setSecVid(String title) {
+        editor.putString(Config.SECOND_VID, title);
+        editor.commit();
+    }
 }

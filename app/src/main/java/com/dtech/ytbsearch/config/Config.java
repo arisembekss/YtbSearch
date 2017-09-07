@@ -27,4 +27,8 @@ public class Config {
 
     public static final String VAL_AD = "val-ad";
 
+    public static final String MAIN_TITLE = "main-title";
+    public static final String SECOND_TITLE = "sec-title";
+    public static final String MAIN_VID = "main-vid";
+    public static final String SECOND_VID = "sec-vid";
 }

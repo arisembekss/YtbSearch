@@ -42,20 +42,20 @@ import java.util.Random;
 
 public class Main3Activity extends AppCompatActivity implements YouTubePlayer.OnInitializedListener {
 
-    public static String[] mainTitle = {
+    public static String[] mainTitle /*= {
             "New Palapa Terbaru",
             "Monata Terbaru",
             "Sagita Terbaru",
             "Sera Terbaru"
 
-    };
+    }*/;
 
-    public static String[] mainQuery = {
+    public static String[] mainQuery /*= {
             "pallapa+terbaru+2017",
             "monata+terbaru",
             "sagita+teerbaru",
             "sera+terbaru"
-    };
+    }*/;
 
     String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
     String main;
@@ -66,7 +66,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
     ProgressDialog loading;
     PrefManager prefManager;
     SharedPreferences sharedPreferences;
-    String valueInters, valueAd;
+    String valueInters, valueAd, prefmaintitle, prefsectitle, prefmainvid, prefsecvid;
     //YouTubePlayerView youTubePlayerView;
     YouTubePlayerFragment youTubePlayerFragment;
     YouTubePlayer player;
@@ -91,7 +91,11 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
         sharedPreferences = getSharedPreferences(Config.PREF_NAME, Config.PRIVATE_MODE);
         valueAd = (sharedPreferences.getString(Config.VAL_AD, ""));
         valueInters = (sharedPreferences.getString(Config.VAL_INTERS, ""));
-
+        prefmaintitle = (sharedPreferences.getString(Config.MAIN_TITLE, ""));
+        prefmainvid = (sharedPreferences.getString(Config.MAIN_VID, ""));
+        mainTitle = prefmaintitle.split(",");
+        mainQuery = prefmainvid.split(",");
+        Log.d("prefmain", prefmaintitle+"\n"+prefmainvid);
         youTubePlayerFragment = (YouTubePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.yview);
         youTubePlayerFragment.initialize(Config.API_YTB,this
