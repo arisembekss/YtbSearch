@@ -1,7 +1,6 @@
 package com.dtech.ytbsearch.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dtech.ytbsearch.PlayActivity;
 import com.dtech.ytbsearch.R;
 import com.dtech.ytbsearch.config.CustomClickInterface;
 import com.dtech.ytbsearch.data.DataJson;
@@ -27,7 +25,7 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private Context context;
     private LayoutInflater inflater;
-    List<DataJson> data = Collections.emptyList();
+    private List<DataJson> data = Collections.emptyList();
     private static CustomClickInterface clickListener;
 
     public MediumVideoList(Context context, List<DataJson> data) {
@@ -63,7 +61,7 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setClickListener(CustomClickInterface itemClickListener) {
-        this.clickListener = itemClickListener;
+        clickListener = itemClickListener;
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -87,9 +85,11 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view) {
             String vidId = listTv.getText().toString();
-            String titileVid = listTitle.getText().toString();
+            //String titileVid = listTitle.getText().toString();
 
-            if (clickListener != null) clickListener.onClick(view, vidId);
+            if (clickListener != null) {
+                clickListener.onClick(view, vidId);
+            }
             /*Intent playVid = new Intent(context, PlayActivity.class);
             playVid.putExtra("id", vidId);
             playVid.putExtra("title", titileVid);
