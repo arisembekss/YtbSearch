@@ -57,7 +57,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
             "sera+terbaru"
     }*/;
 
-    String[] idVid = {"rncPjUkqXeA", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
+    String[] idVid = {"SeMiC8QGL0w", "9J3UJxnnsng", "SeMiC8QGL0w", "UtjFu8c_goE", "tzlz2ZVpCXo"};
     String main;
 
     //private static final int RECOVERY_REQUEST = 1;

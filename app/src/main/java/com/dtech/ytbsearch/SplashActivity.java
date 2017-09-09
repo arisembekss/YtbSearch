@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);*/
 
         imgsplash = (ImageView) findViewById(R.id.imgsplash);
-        mWaveDrawable = new WaveDrawable(this, R.mipmap.ic_launcher);
+        mWaveDrawable = new WaveDrawable(this, R.drawable.ic_launcherr);
         imgsplash.setImageDrawable(mWaveDrawable);
         mWaveDrawable.setLevel(5000);
         mWaveDrawable.setIndeterminate(true);

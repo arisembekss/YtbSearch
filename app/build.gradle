@@ -4,9 +4,9 @@ android {
     signingConfigs {
         config {
             keyAlias 'ytbsrch'
-            keyPassword '300312'
+            keyPassword ''
             storeFile file('../ytb.jks')
-            storePassword '300312'
+            storePassword ''
         }
     }
     compileSdkVersion 25
@@ -15,8 +15,8 @@ android {
         applicationId "com.dtech.ytbsearch"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 4
-        versionName "1.0"
+        versionCode 5
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
