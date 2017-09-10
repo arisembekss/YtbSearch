@@ -1,9 +1,13 @@
 package com.dtech.ytbsearch;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -224,7 +228,28 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         loading.dismiss();
-                        Log.d("eror json: ", error.getMessage());
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Main3Activity.this);
+                        builder.setTitle("Error");
+                        builder.setMessage("Gagal komunikasi dengan server atau server maintenance");
+                        builder.setPositiveButton(
+                                "Ok",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        dialogInterface.dismiss();
+                                    }
+                                }
+                        );
+
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+
+                        /*Dialog dialog = new Dialog(Main3Activity.this);
+                        dialog.setTitle("Error");
+                        dialog.*/
+                        /*Snackbar.make(View., "Beberapa video tidak bisa dimainkan dikarenakan Kebijakan dari masing-masing penyedia video", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();*/
                     }
                 });
 

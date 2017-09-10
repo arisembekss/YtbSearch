@@ -156,9 +156,13 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
         //final String vidid = id;
         //setmVidId(idv);
         //youTubeView.initialize(Config.API_YTB, this);
-        this.player.loadVideo(
-                idv
-        );
+       try {
+            this.player.loadVideo(
+                    idv
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
