@@ -102,36 +102,9 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
         Log.d("prefmain", prefmaintitle+"\n"+prefmainvid);
         youTubePlayerFragment = (YouTubePlayerFragment)
                 getFragmentManager().findFragmentById(R.id.yview);
-        youTubePlayerFragment.initialize(Config.API_YTB,this
-                /*new YouTubePlayer.OnInitializedListener() {
-                    @Override
-                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                        YouTubePlayer youTubePlayer, boolean b) {
-                        // do any work here to cue video, play video, etc.
-
-                        Random random = new Random();
-                        int index =random.nextInt(idVid.length);
-                        Log.d("index vid", String.valueOf(index));
-                        String smain = idVid[index];
-
-                        youTubePlayer.cueVideo(smain);
-
-                    }
-                    @Override
-                    public void onInitializationFailure(YouTubePlayer.Provider provider,
-                                                        YouTubeInitializationResult youTubeInitializationResult) {
-
-                    }
-                }*/);
+        youTubePlayerFragment.initialize(Config.API_YTB,this);
         youTubePlayerFragment.onResume();
-        /*youTubePlayerView = (YouTubePlayerView) findViewById(R.id.yview);
-        youTubePlayerView.initialize(Config.API_YTB, this);*/
 
-        /*Random random = new Random();
-        int index =random.nextInt(idVid.length);
-        Log.d("index vid", String.valueOf(index));
-        String smain = idVid[index];
-        randomVid(smain);*/
         initFbase();
         initUi();
     }
@@ -145,7 +118,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
     }
 
     private void initFbase() {
-        adRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("banner-native/status");
+        /*adRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("banner-native/status");
         adRef.keepSynced(true);
         adRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -175,7 +148,7 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
     }
 
     private void initUi() {
@@ -185,6 +158,11 @@ public class Main3Activity extends AppCompatActivity implements YouTubePlayer.On
         mInterstitialAd.loadAd(new AdRequest.Builder()/*.addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7")*/.build());
         grid = (GridView) findViewById(R.id.griMain);
         btnArtis = (Button) findViewById(R.id.bmain);
+        if (valueAd.contains("0")) {
+            btnArtis.setVisibility(View.GONE);
+        } else {
+            btnArtis.setVisibility(View.VISIBLE);
+        }
         GridMainMenu adapter = new GridMainMenu(this, mainTitle, mainQuery);
         grid.setAdapter(adapter);
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -1,25 +1,15 @@
 package com.dtech.ytbsearch;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.preference.PrefManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,16 +18,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.race604.drawable.wave.WaveDrawable;
 
-import java.io.FileOutputStream;
-
-import static com.dtech.ytbsearch.R.id.imgsplash;
-
 public class SplashActivity extends AppCompatActivity {
 
     PrefManager prefManager;
     WaveDrawable mWaveDrawable;
     ImageView imgsplash;
-    DatabaseReference refSecTitle, refSecVid, refMainTitle, refMainVid;
+    DatabaseReference refSecTitle, refSecVid, refMainTitle, refMainVid, adRef, intersRef;
     String prefsectitle, prefsecvid, prefmaintitle, prefmainvid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +97,38 @@ public class SplashActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     prefmainvid = String.valueOf(dataSnapshot.getValue());
                     prefManager.setMainVid(prefmainvid);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            adRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("banner-native/status");
+            adRef.keepSynced(true);
+            adRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefManager.setAd(String.valueOf(dataSnapshot.getValue()));
+                    Log.d("value-dbase-ad", String.valueOf(dataSnapshot.getValue()));
+                    //Log.d("value-pref-ad", valueAd);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            intersRef = FirebaseDatabase.getInstance().getReference("ytb").child("vallen").child("inters/status");
+            intersRef.keepSynced(true);
+            intersRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    prefManager.setadInters(String.valueOf(dataSnapshot.getValue()));
+                    Log.d("value-dbase-inter", String.valueOf(dataSnapshot.getValue()));
+                    //Log.d("value-pref-inters", valueInters);
                 }
 
                 @Override
