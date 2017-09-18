@@ -45,7 +45,7 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        MyHolder myHolder = (MyHolder) holder;
+       /* MyHolder myHolder = (MyHolder) holder;
         DataJson current = data.get(position);
         myHolder.listTv.setText(current.videoId);
         myHolder.listTitle.setText(current.titleVid);
@@ -53,7 +53,7 @@ public class VideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Picasso.with(context).load(current.urlVid)
                 .error(R.mipmap.ic_bussy)
                 .placeholder(R.mipmap.ic_text_loading)
-                .into(myHolder.imgUrl);
+                .into(myHolder.imgUrl);*/
     }
 
     @Override

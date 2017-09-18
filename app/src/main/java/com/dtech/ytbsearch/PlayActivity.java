@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,9 +17,12 @@ import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.config.CustomClickInterface;
 import com.dtech.ytbsearch.data.DataJson;
 import com.dtech.ytbsearch.preference.PrefManager;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -32,12 +36,13 @@ import java.util.ArrayList;
 
 public class PlayActivity extends YouTubeBaseActivity implements   CustomClickInterface, YouTubePlayer.OnInitializedListener {
 
+    private static final int ITEMS_PER_AD = 6;
     YouTubePlayerView youTubeView;
     private static final int RECOVERY_REQUEST = 1;
 
     RecyclerView rcPlay;
     String id, title, jsonResponse;
-    ArrayList<DataJson> dataJson = new ArrayList<>();
+    ArrayList<Object> dataJson = new ArrayList<>();
     MediumVideoList adapter;
 
     YouTubePlayer player;
@@ -87,7 +92,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
 
         adView = (AdView) findViewById(R.id.adView);
         if (valueAd.contains("1")) {
-            adView.setVisibility(View.VISIBLE);
+            adView.setVisibility(View.INVISIBLE);
             initAds();
         } else {
             adView.setVisibility(View.INVISIBLE);
@@ -98,7 +103,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
 
     private void initAds() {
 
-        adRequest = new AdRequest.Builder()./*addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7").*/build();
+        adRequest = new AdRequest.Builder()/*.addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7")*/.build();
         adView.loadAd(adRequest);
 
         /*init interstitial*/
@@ -110,6 +115,94 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
     public void initUi() {
         rcPlay = (RecyclerView) findViewById(R.id.rcPlay);
         showResponse(jsonResponse);
+        addNativeExpressAds();
+        setUpAndLoadNativeExpressAds();
+    }
+
+    private void setUpAndLoadNativeExpressAds() {
+        rcPlay.post(new Runnable() {
+            @Override
+            public void run() {
+                final float scale = PlayActivity.this.getResources().getDisplayMetrics().density;
+                // Set the ad size and ad unit ID for each Native Express ad in the items list.
+                if (valueAd.contains("1")) {
+                    for (int i = 0; i <= dataJson.size(); i += ITEMS_PER_AD) {
+                        final NativeExpressAdView adView =
+                                (NativeExpressAdView) dataJson.get(i);
+                        final CardView cardView = (CardView) findViewById(R.id.adcard);
+
+                        final int adWidth = cardView.getWidth() - cardView.getPaddingLeft()
+                                - cardView.getPaddingRight();
+                        AdSize adSize = new AdSize((int) (adWidth / scale), 80);
+                        adView.setAdSize(adSize);
+                        adView.setAdUnitId(Config.NATIVE_REC);
+                        /*adView.setAdListener(new AdListener() {
+                            @Override
+                            public void onAdLoaded() {
+                                super.onAdLoaded();
+                                Log.d("onAdLoaded: ", "success");
+                            }
+                        });*/
+                        //adView.loadAd(new AdRequest.Builder().build());
+
+                    }
+
+                    // Load the first Native Express ad in the items list.
+
+                    loadNativeExpressAd(0);
+
+                } else {
+                    CardView cardView = (CardView) findViewById(R.id.adcard);
+                    cardView.setVisibility(View.GONE);
+                }
+
+            }
+        });
+    }
+
+    private void loadNativeExpressAd(final int index) {
+        if (index >= dataJson.size()) {
+            return;
+        }
+
+        Object item = dataJson.get(index);
+        if (!(item instanceof NativeExpressAdView)) {
+            throw new ClassCastException("Expected item at index " + index + " to be a Native"
+                    + " Express ad.");
+        }
+
+        final NativeExpressAdView adView = (NativeExpressAdView) item;
+
+        // Set an AdListener on the NativeExpressAdView to wait for the previous Native Express ad
+        // to finish loading before loading the next ad in the items list.
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+                // The previous Native Express ad loaded successfully, call this method again to
+                // load the next ad in the items list.
+                loadNativeExpressAd(index + ITEMS_PER_AD);
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // The previous Native Express ad failed to load. Call this method again to load
+                // the next ad in the items list.
+                Log.e("MainActivity", "The previous Native Express ad failed to load. Attempting to"
+                        + " load the next Native Express ad in the items list.");
+                loadNativeExpressAd(index + ITEMS_PER_AD);
+            }
+        });
+
+        // Load the Native Express ad.
+        adView.loadAd(new AdRequest.Builder()/*.addTestDevice("D1CB1A0F81471E6BF7A338ECB8C9A2C7")*/.build());
+    }
+
+    private void addNativeExpressAds() {
+        for (int i = 0; i <= dataJson.size(); i += ITEMS_PER_AD) {
+            final NativeExpressAdView adView = new NativeExpressAdView(PlayActivity.this);
+            dataJson.add(i, adView);
+        }
     }
 
     public void showResponse(String response) {
@@ -119,7 +212,7 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
             //String nxt = result.getString("nextPageToken");
 
             JSONArray items = result.getJSONArray("items");
-
+            String etag, videoId, channelId, titleVid, urlVid;
             for (int k = 0; k < items.length(); k++) {
                 JSONObject itemData = items.getJSONObject(k);
                 JSONObject itemId = itemData.getJSONObject("id");
@@ -128,14 +221,15 @@ public class PlayActivity extends YouTubeBaseActivity implements   CustomClickIn
                 JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("default");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
                 if (itemId.has("videoId")) {
-                    DataJson dataDump = new DataJson();
-                    dataDump.videoId = itemId.getString("videoId");
-                    dataDump.titleVid = itemSnippet.getString("title");
-                    dataDump.urlVid = thumbnailDefault.getString("url");
+
+                    videoId = itemId.getString("videoId");
+                    titleVid = itemSnippet.getString("title");
+                    urlVid = thumbnailDefault.getString("url");
+                    DataJson dataDump = new DataJson("", videoId, "", titleVid, urlVid);
                     dataJson.add(dataDump);
                 } else {
-                    DataJson dataDump = new DataJson();
-                    dataDump.channelId = "Channel Session";
+                    channelId = "Channel Session";
+                    DataJson dataDump = new DataJson("", "", channelId, "", "");
                 }
 
             }

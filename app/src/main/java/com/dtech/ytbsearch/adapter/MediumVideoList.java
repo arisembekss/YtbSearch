@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.dtech.ytbsearch.R;
 import com.dtech.ytbsearch.config.CustomClickInterface;
 import com.dtech.ytbsearch.data.DataJson;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
@@ -23,12 +24,17 @@ import java.util.List;
 
 public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static final int ITEM_PER_AD = 6;
     private Context context;
     private LayoutInflater inflater;
-    private List<DataJson> data = Collections.emptyList();
+    private List<Object> data = Collections.emptyList();
     private static CustomClickInterface clickListener;
+    private static final int MENU_ITEM_VIEW_TYPE = 0;
 
-    public MediumVideoList(Context context, List<DataJson> data) {
+    // The Native Express ad view type.
+    private static final int NATIVE_EXPRESS_AD_VIEW_TYPE = 1;
+
+    public MediumVideoList(Context context, List<Object> data) {
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.data = data;
@@ -36,23 +42,52 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.medium_list_layout, parent, false);
-        MyHolder holder = new MyHolder(view);
-        return holder;
+        switch (viewType) {
+            case NATIVE_EXPRESS_AD_VIEW_TYPE:
+                View viewad = inflater.inflate(R.layout.medium_ad_list_layout, parent, false);
+                return new NativeExpressAdViewHolder(viewad);
+            case MENU_ITEM_VIEW_TYPE:
+            default:
+                View view = inflater.inflate(R.layout.medium_list_layout, parent, false);
+                return new MyHolder(view);
+        }
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        MyHolder myHolder = (MyHolder) holder;
-        DataJson current = data.get(position);
-        myHolder.listTv.setText(current.videoId);
-        myHolder.listTitle.setText(current.titleVid);
-        /*myHolder.listUrl.setText(current.urlVid);*/
-        Picasso.with(context).load(current.urlVid)
-                .error(R.mipmap.ic_launcher_round)
-                .placeholder(R.mipmap.ic_launcher)
-                .into(myHolder.imgUrl);
+        int viewType = getItemViewType(position);
+        switch (viewType) {
+            case MENU_ITEM_VIEW_TYPE:
+                MyHolder myHolder = (MyHolder) holder;
+                DataJson current = (DataJson) data.get(position);
+                myHolder.listTv.setText(current.getVideoId());
+                myHolder.listTitle.setText(current.getTitleVid());
+                /*myHolder.listUrl.setText(current.urlVid);*/
+                Picasso.with(context).load(current.getUrlVid())
+                        .error(R.mipmap.ic_launcher_round)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .into(myHolder.imgUrl);
+                break;
+            case NATIVE_EXPRESS_AD_VIEW_TYPE:
+            default:
+
+                NativeExpressAdViewHolder nativeExpressHolder =
+                        (NativeExpressAdViewHolder) holder;
+                NativeExpressAdView adView =
+                        (NativeExpressAdView) data.get(position);
+                ViewGroup adCardView = (ViewGroup) nativeExpressHolder.itemView;
+                if (adCardView.getChildCount() > 0) {
+                    adCardView.removeAllViews();
+                }
+                if (adView.getParent() != null) {
+                    ((ViewGroup) adView.getParent()).removeView(adView);
+                }
+
+                // Add the Native Express ad to the native express ad view.
+                adCardView.addView(adView);
+
+        }
     }
 
     @Override
@@ -60,8 +95,21 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return data.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return (position % ITEM_PER_AD == 0) ? NATIVE_EXPRESS_AD_VIEW_TYPE
+                : MENU_ITEM_VIEW_TYPE;
+    }
+
     public void setClickListener(CustomClickInterface itemClickListener) {
         clickListener = itemClickListener;
+    }
+
+    private class NativeExpressAdViewHolder extends RecyclerView.ViewHolder {
+
+        NativeExpressAdViewHolder(View view) {
+            super(view);
+        }
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -76,7 +124,7 @@ public class MediumVideoList extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             listTv = (TextView) itemView.findViewById(R.id.listVideoId);
             listTitle =(TextView) itemView.findViewById(R.id.listTitle);
-            listUrl = (TextView) itemView.findViewById(R.id.listUrl);
+            /*listUrl = (TextView) itemView.findViewById(R.id.listUrl);*/
             imgUrl = (ImageView) itemView.findViewById(R.id.imgUrl);
             cardView = (CardView) itemView.findViewById(R.id.card);
             cardView.setOnClickListener(this);

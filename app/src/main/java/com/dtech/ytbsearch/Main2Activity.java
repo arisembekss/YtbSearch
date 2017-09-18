@@ -23,6 +23,7 @@ import com.dtech.ytbsearch.adapter.GridMenu;
 import com.dtech.ytbsearch.config.Config;
 import com.dtech.ytbsearch.preference.PrefManager;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.NativeExpressAdView;
 
 import org.json.JSONArray;
@@ -90,7 +91,7 @@ public class Main2Activity extends AppCompatActivity {
     AdRequest adRequest;
     PrefManager prefManager;
     SharedPreferences sharedPreferences;
-    NativeExpressAdView adView;
+    AdView adView;
     String valueAd, prefsectitle, prefsecvid;
 
     @Override
@@ -106,7 +107,7 @@ public class Main2Activity extends AppCompatActivity {
         gridTitle = prefsectitle.split(",");
         gridQuery = prefsecvid.split(",");
         Log.d("prefsec", prefsectitle+"\n"+prefsecvid);
-        adView = (NativeExpressAdView)findViewById(R.id.nativeadView);
+        adView = (AdView) findViewById(R.id.adView1);
         if (valueAd.contains("1")) {
             adView.setVisibility(View.VISIBLE);
             initAds();

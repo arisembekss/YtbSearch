@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject snippetThumbnail = itemSnippet.getJSONObject("thumbnails");
                 JSONObject thumbnailDefault = snippetThumbnail.getJSONObject("high");
                 //JSONObject videoId = itemId.getJSONObject("videoId");
-                if (itemId.has("videoId")) {
+                /*if (itemId.has("videoId")) {
                     DataJson dataDump = new DataJson();
                     dataDump.videoId = itemId.getString("videoId");
                     dataDump.titleVid = itemSnippet.getString("title");
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     DataJson dataDump = new DataJson();
                     dataDump.channelId = "Channel Session";
-                }
+                }*/
 
             }
 

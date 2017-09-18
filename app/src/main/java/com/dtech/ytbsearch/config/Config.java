@@ -31,4 +31,5 @@ public class Config {
     public static final String SECOND_TITLE = "sec-title";
     public static final String MAIN_VID = "main-vid";
     public static final String SECOND_VID = "sec-vid";
+    public static final String NATIVE_REC = "ca-app-pub-6611308189785883/9274990229";
 }
